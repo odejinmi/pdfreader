@@ -1,3 +1,5 @@
+import '../../app/modules/search_module/search_page.dart';
+import '../../app/modules/search_module/search_bindings.dart';
 import '../../app/modules/viewpage_module/viewpage_page.dart';
 import '../../app/modules/viewpage_module/viewpage_bindings.dart';
 import '../../app/modules/file_picker_module/file_picker_bindings.dart';
@@ -19,6 +21,11 @@ abstract class AppPages {
       name: Routes.VIEWPAGE,
       page: () => ViewpagePage(),
       binding: ViewpageBinding(),
+    ),
+    GetPage(
+      name: Routes.SEARCH,
+      page: () => searchPage(),
+      binding: searchBinding(),
     ),
   ];
 }

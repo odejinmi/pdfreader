@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:pdfreader/app/modules/viewpage_module/viewpage_controller.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 /**
@@ -22,30 +21,50 @@ class ViewpagePage extends GetView<ViewpageController> {
             controller.pdfViewerController.pageCount;
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Read pdf", style: TextStyle(color: Colors.black),),
+        backgroundColor: const Color(0xff771B1B),
+        // title: const Text("Read pdf", style: TextStyle(color: Colors.black),),
         actions: <Widget>[
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              Container(
-                  width: 20, child: controller.paginationTextField(context)),
-              Padding(
-                  padding:
-                  const EdgeInsets.only(left: 10.0, right: 10.0),
-                  child: Text(
-                    '/',
-                    style: TextStyle(color: controller.color, fontSize: 16),
-                    semanticsLabel: '',
-                  )),
-              Text(
-                controller.pageCount.toString(),
-                style: TextStyle(color: controller.color, fontSize: 16),
-                semanticsLabel: '',
-              )
-              // Bookmark button
-            ],
+          IconButton(onPressed: (){}, icon: const Icon(Icons.share,color: Colors.white,)),
+          IconButton(
+              onPressed: (){
+                bottomsheet();
+              },
+              icon: const Icon(Icons.volume_up_sharp,color: Colors.white,)
           ),
+          IconButton(
+              onPressed: (){},
+              icon: const Icon(Icons.print,color: Colors.white,)
+          ),
+          IconButton(
+              onPressed: (){},
+              icon: const Icon(Icons.star_sharp,color: Colors.white,)
+          ),
+          IconButton(
+              onPressed: (){},
+              icon: const Icon(Icons.more_vert,color: Colors.white,)
+          ),
+          // Row(
+          //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //   mainAxisSize: MainAxisSize.min,
+          //   children: <Widget>[
+          //     Container(
+          //         width: 20, child: controller.paginationTextField(context)),
+          //     Padding(
+          //         padding:
+          //         const EdgeInsets.only(left: 10.0, right: 10.0),
+          //         child: Text(
+          //           '/',
+          //           style: TextStyle(color: controller.color, fontSize: 16),
+          //           semanticsLabel: '',
+          //         )),
+          //     Text(
+          //       controller.pageCount.toString(),
+          //       style: TextStyle(color: controller.color, fontSize: 16),
+          //       semanticsLabel: '',
+          //     )
+          //     // Bookmark button
+          //   ],
+          // ),
           // Previous page button
           // Padding(
           //   padding: const EdgeInsets.only(left: 16),
@@ -91,16 +110,16 @@ class ViewpagePage extends GetView<ViewpageController> {
           //       )),
           // ),
 
-          IconButton(
-            icon: const Icon(
-              Icons.bookmark,
-              color: Colors.white,
-              semanticLabel: 'Bookmark',
-            ),
-            onPressed: () {
-              controller.pdfViewerKey.currentState?.openBookmarkView();
-            },
-          ),
+          // IconButton(
+          //   icon: const Icon(
+          //     Icons.bookmark,
+          //     color: Colors.white,
+          //     semanticLabel: 'Bookmark',
+          //   ),
+          //   onPressed: () {
+          //     controller.pdfViewerKey.currentState?.openBookmarkView();
+          //   },
+          // ),
           // Search button
           // Material(
           //   color: Colors.transparent,
@@ -154,30 +173,21 @@ class ViewpagePage extends GetView<ViewpageController> {
           );
         },
         onDocumentLoaded: (PdfDocumentLoadedDetails details) {
-          var currentdocument = GetStorage().read("currentdocument");
-          if (currentdocument != null) {
             // print(currentdocument);
             // print(int.parse(currentdocument));
             // controller.pdfViewerController.jumpToPage(int.parse(currentdocument));
-          }
         },
         // pageLayoutMode: PdfPageLayoutMode.single,
       ),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.white,
-        onPressed: () {
-          controller.speak();
-        },
-        child: Obx(() {
-          return Icon(
-            controller.ttsState == TtsState.stopped ? Icons.play_arrow : Icons
-                .stop,
-            color: controller.ttsState == TtsState.stopped ? Colors.green : Colors
-                .red,);
-        }),
-      ),
+      floatingActionButton: controller.playpause(),
       floatingActionButtonLocation: FloatingActionButtonLocation
           .miniCenterFloat,
+    );
+  }
+  void bottomsheet(){
+    Get.bottomSheet(
+      controller.voicecontroller(),
+      backgroundColor: Colors.white,
     );
   }
 }
