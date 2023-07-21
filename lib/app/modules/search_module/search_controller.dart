@@ -49,19 +49,19 @@ class searchController extends GetxController{
     if (name.isEmpty) {
       _handleList(documentfetch);
     } else {
-      List<Datamodel> list = documentfetch.where((item) {
-        return item.path
-            .split('/')
-            .last
-            .toLowerCase()
-            .contains(name.toLowerCase())
-            .toList();
-      });
+      var list = documentfetch.where((v) {
+        return v.name.toString().toLowerCase().contains(name.toLowerCase());
+      }).toList();
       _handleList(list);
     }
   }
   void _handleList(List<Datamodel> list) {
     documentviewed.clear();
     documentviewed.addAll(list);
+  }
+
+  updated(document) async {
+    await deleteContact(document);
+    documentviewed.remove(document);
   }
 }

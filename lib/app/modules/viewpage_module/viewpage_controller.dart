@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
@@ -7,6 +8,9 @@ import 'package:flutter_tts/flutter_tts.dart';
 import 'package:get/get.dart';
 import 'package:syncfusion_flutter_pdf/pdf.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
+
+import '../../data/provider/database.dart';
+import '../../data/provider/datamodel.dart';
 
 // import 'package:text_to_speech/text_to_speech.dart';
 
@@ -29,13 +33,14 @@ class ViewpageController extends GetxController{
   get pdfViewerKey => _pdfViewerKey.value;
 
   File? file;
-  TextEditingController? _textEditingController;
+  var _textEditingController = TextEditingController().obs;
+  set textEditingController(value)=> _textEditingController.value = value;
+  get textEditingController => _textEditingController.value;
 
   final _isWeb = false.obs;
   set isWeb (value) => _isWeb.value = value;
   get isWeb => _isWeb.value;
 
-  Color? _textColor;
   Color? disabledColor;
   final  _pdfViewerController = PdfViewerController().obs;
   set pdfViewerController(value) => _pdfViewerController.value = value;
@@ -50,7 +55,6 @@ class ViewpageController extends GetxController{
   // get searchResult => _searchResult.value;
 
 
-  final FocusNode _focusNode = FocusNode()..requestFocus();
   Color? color;
 
   final _pageCount = 0.obs;
@@ -67,6 +71,10 @@ class ViewpageController extends GetxController{
   set newVoiceText(value)=> _newVoiceText.value = value;
   get newVoiceText => _newVoiceText.value;
 
+  final _result = <Datamodel>[].obs;
+  set result(value)=> _result.value = value;
+  get result => _result.value;
+
   @override
   void onInit() {
     // TODO: implement onInit
@@ -74,12 +82,23 @@ class ViewpageController extends GetxController{
 
     initTts();
     pdfViewerController.addListener(pageChanged);
-    _textEditingController =
+    textEditingController =
         TextEditingController(text: pdfViewerController.pageNumber.toString());
-    file = File(Get.arguments["document"]);
+    obj = Get.arguments["document"];
+    file = File(obj);
     pageCount = pdfViewerController.pageCount;
+    fetch();
   }
 
+  fetch() async {
+    result =  datamodelFromJson(jsonEncode(
+        await fetchspecificContact("path= ?", [obj], "document")));
+      if (result.isNotEmpty) {
+        if (result[0].currentpage != 0) {
+            pdfViewerController.jumpToPage(result[0].currentpage);
+        }
+      }
+    }
   @override
   void onReady() {
     // TODO: implement onReady
@@ -103,11 +122,23 @@ class ViewpageController extends GetxController{
     if (pageCount != pdfViewerController.pageCount) {
       pageCount = pdfViewerController.pageCount;
     }
-    if (_textEditingController!.text !=
+    if (textEditingController.text !=
         pdfViewerController.pageNumber.toString()) {
-      Future<dynamic>.delayed(Duration.zero, () {
-        _textEditingController!.text = pdfViewerController.pageNumber.toString();
-        update();
+
+      var current =  datamodelFromJson(jsonEncode(
+          await fetchspecificContact("current= ?", [1], "document")));
+      if (current.isNotEmpty) {
+        current[0].currentpage = 0;
+        await updateContact(current[0]);
+      }
+      Future<dynamic>.delayed(Duration.zero, () async {
+        textEditingController.text = pdfViewerController.pageNumber.toString();
+        if (result.isNotEmpty) {
+        result[0].currentpage = pdfViewerController.pageNumber;
+        result[0].totalpage = pageCount;
+        result[0].currentpage = 1;
+        await updateContact(result[0]);
+        }
       });
     }
   }
@@ -202,7 +233,8 @@ Future<void> loadpdf() async {
 
     //Extract text.
     final String text =
-    extractor!.extractText(startPageIndex: int.parse(_textEditingController!.text)-1, endPageIndex: int.parse(_textEditingController!.text)-1);
+    extractor!.extractText(startPageIndex: int.parse(textEditingController.text)-1,
+        endPageIndex: int.parse(textEditingController.text)-1);
     newVoiceText = text;
     if (isPlaying || isPaused || isContinued) {
       stop();

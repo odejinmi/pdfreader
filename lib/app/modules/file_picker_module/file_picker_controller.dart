@@ -81,8 +81,9 @@ class FilePickerController extends GetxController with GetTickerProviderStateMix
           ?.files;
       if(paths!=null) {
         var path = paths![0].path.toString();
-        var result =  datamodelFromJson(jsonEncode(
-            await fetchspecificContact("path= ?", [path], "document")));
+         var result = documentfetch.where((v) {
+           return v.path.toLowerCase() == path.toLowerCase();
+         }).toList();
         String returnsize = await _getFileSize(path);
         if (result.isEmpty) {
           await insertContact(
@@ -103,8 +104,9 @@ class FilePickerController extends GetxController with GetTickerProviderStateMix
 
   }
 
-  updated(){
-      update();
+  updated(document) async {
+    await deleteContact(document);
+    documentviewed.remove(document);
   }
 
   Future<String> _getFileSize(String path) async {
@@ -180,14 +182,14 @@ class FilePickerController extends GetxController with GetTickerProviderStateMix
     switch (sort) {
       case "name":
       var result =
-            documentfetch.sort((a, b) => b.path.compareTo(a.path));
+            documentfetch.sort((a, b) => b.path.toString().compareTo(a.path));
       print(result);
       case "size":
         documentviewed =
-            documentfetch.sort((a, b) => a.filesized.compareTo(b.filesized));
+            documentfetch.sort((a, b) => a.filesized.toString().compareTo(b.filesized));
       case "modified":
         documentviewed =
-            documentfetch.sort((a, b) => a.datecreated.compareTo(b.datecreated));
+            documentfetch.sort((a, b) => a.datecreated.toString().compareTo(b.datecreated));
       default :
         documentviewed = documentfetch;
     }

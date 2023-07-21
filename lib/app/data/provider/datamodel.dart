@@ -21,6 +21,7 @@ class Datamodel {
     this.favourite = 0,
     this.datecreated,
     this.filesized,
+    this.totalpage,
   });
 
   var id;
@@ -32,6 +33,7 @@ class Datamodel {
   var favourite;
   var datecreated;
   var filesized;
+  var totalpage;
 
   factory Datamodel.fromJson(Map<String, dynamic> json) => Datamodel(
         id: json["id"],
@@ -43,6 +45,7 @@ class Datamodel {
         favourite: json["favourite"],
         datecreated: json["datecreated"],
         filesized: json["filesized"],
+        totalpage: json["totalpage"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -55,6 +58,7 @@ class Datamodel {
         "favourite": favourite,
         "datecreated": datecreated,
         "filesized": filesized,
+        "totalpage": totalpage,
       };
 
   toString() => ' "id": $id, '
@@ -65,6 +69,7 @@ class Datamodel {
       '"currentpage": $currentpage,'
       '"favourite": $favourite,'
       '"datecreated": $datecreated,'
+      '"totalpage": $totalpage,'
       '"filesized": $filesized,';
 
 

@@ -19,7 +19,7 @@ Future<Database> Databasequary() async {
 
        database.execute(
         'CREATE TABLE document(id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, path TEXT, name TEXT, type TEXT, '
-            'current INTEGER, currentpage INTEGER DEFAULT "0", favourite INTEGER DEFAULT "0", '
+            'current INTEGER, currentpage INTEGER DEFAULT "0", totalpage INTEGER DEFAULT "0", favourite INTEGER DEFAULT "0", '
             'filesized TEXT, datecreated TEXT)',
       );
       //  database.execute(

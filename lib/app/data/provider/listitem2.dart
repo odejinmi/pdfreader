@@ -6,13 +6,13 @@ import 'package:url_launcher/url_launcher.dart';
 import 'database.dart';
 import 'datamodel.dart';
 
-class Listitem extends StatelessWidget {
-  final documentviewed;
+class Listitem2 extends StatelessWidget {
+  final document;
   final primarycolour;
   final documenttype;
   final updated;
 
-  const Listitem({Key? key, required this.documentviewed,
+  const Listitem2({Key? key, required this.document,
     required this.primarycolour, required this.documenttype, required this.updated})
       : super(key: key);
 
@@ -20,11 +20,7 @@ class Listitem extends StatelessWidget {
   Widget build(BuildContext context) {
     // _onShare method:
     final box = context.findRenderObject() as RenderBox?;
-    return documentviewed.isNotEmpty ? ListView.builder(
-          itemCount: documentviewed.length,
-          itemBuilder: (BuildContext context, int index) {
-            Datamodel document = documentviewed[index];
-            return ListTile(
+    return ListTile(
               onTap: () {
                 openfile(document.path);
               },
@@ -47,7 +43,7 @@ class Listitem extends StatelessWidget {
                   ),
                   IconButton(
                       onPressed: () {
-                        bottomsheet(document, box, index);
+                        bottomsheet(document, box);
                       },
                       icon: const Icon(Icons.more_vert)
                   ),
@@ -62,19 +58,9 @@ class Listitem extends StatelessWidget {
                 ],),
               ),
             );
-          }) : Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Image.asset("asset/empty.png", height: 171, width: 171,),
-              Text("You don't have any ${documenttype.toUpperCase()} document",
-                style: const TextStyle(color: Color(0xff868686),
-                    fontWeight: FontWeight.w400,
-                    fontSize: 15),)
-            ],
-          );
   }
 
-  void bottomsheet(Datamodel document, box, int position) {
+  void bottomsheet(Datamodel document, box) {
     Get.bottomSheet(
       Container(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 25),

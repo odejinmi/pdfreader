@@ -74,9 +74,12 @@ class FilePickerPage extends GetView<FilePickerController> {
           body: Center(
             child: Padding(
               padding: const EdgeInsets.only(left: 5.0, right: 5.0),
-              child: Listitem(documentviewed: controller.documentviewed,
-                  primarycolour: controller.primarycolour, documenttype: controller.documenttype,
-                update: controller.updated(),),
+              child: Obx(() {
+                return Listitem(documentviewed: controller.documentviewed,
+                  primarycolour: controller.primarycolour,
+                  documenttype: controller.documenttype,
+                  updated: controller.updated,);
+              }),
             ),
           ),
           // bottomNavigationBar: Obx(() {
@@ -98,9 +101,9 @@ class FilePickerPage extends GetView<FilePickerController> {
           // }),
           floatingActionButton: FloatingActionButton(
             onPressed: () => controller.pickFiles(),
-            child: const Icon(Icons.add, size: 40,),
             backgroundColor: controller.primarycolour,
             mini: true,
+            child: const Icon(Icons.add, size: 40,),
           ),
         );
       }),
