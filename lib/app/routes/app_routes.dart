@@ -4,6 +4,7 @@ part of './app_pages.dart';
  * */
 
 abstract class Routes {
+  static const SPLASH = '/';
   static const FILE_PICKER = '/file_picker'; // FilePicker page
   static const VIEWPAGE = '/viewpage'; // Viewpage page
   static const SEARCH = '/search'; // search page

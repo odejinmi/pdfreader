@@ -48,7 +48,7 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ),
-      initialRoute: "/file_picker",
+      initialRoute: Routes.SPLASH,
       getPages: AppPages.pages,
       // home: LandingPage(),
     );

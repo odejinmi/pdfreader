@@ -65,9 +65,13 @@ class Listitem2 extends StatelessWidget {
                     const SizedBox(height: 4),
                     Row(
                       children: [
-                        Text(
-                          document.datecreated,
-                          style: TextStyle(color: Colors.grey[600], fontSize: 12),
+                        Flexible(
+                          child: Text(
+                            document.datecreated,
+                            style: TextStyle(color: Colors.grey[600], fontSize: 12),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
                         ),
                         const SizedBox(width: 8),
                         Container(
