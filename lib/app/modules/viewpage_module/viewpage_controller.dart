@@ -357,11 +357,11 @@ Future<void> loadpdf() async {
     });
 
     if (isAndroid) {
-      flutterTts.setInitHandler(() {
-        // setState(() {
-        print("TTS Initialized");
-        // });
-      });
+      // flutterTts.setInitHandler(() {
+      //   // setState(() {
+      //   print("TTS Initialized");
+      //   // });
+      // });
     }
 
     flutterTts.setCompletionHandler(() {

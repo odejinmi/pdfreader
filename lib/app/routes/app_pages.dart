@@ -14,18 +14,18 @@ abstract class AppPages {
   static final pages = [
     GetPage(
       name: Routes.FILE_PICKER,
-      page: () => FilePickerPage(),
+      page: () => const FilePickerPage(),
       binding: FilePickerBinding(),
     ),
     GetPage(
       name: Routes.VIEWPAGE,
-      page: () => ViewpagePage(),
+      page: () => const ViewpagePage(),
       binding: ViewpageBinding(),
     ),
     GetPage(
       name: Routes.SEARCH,
-      page: () => searchPage(),
-      binding: searchBinding(),
+      page: () => const SearchPage(),
+      binding: SearchBinding(),
     ),
   ];
 }

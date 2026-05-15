@@ -9,7 +9,7 @@ import '../../data/provider/datamodel.dart';
  * GetX Template Generator - fb.com/htngu.99
  * */
 
-class searchController extends GetxController{
+class SearchController extends GetxController{
 
   final _obj = ''.obs;
   set obj(value) => _obj.value = value;
@@ -60,7 +60,7 @@ class searchController extends GetxController{
     documentviewed.addAll(list);
   }
 
-  updated(document) async {
+  Future<void> updated(Datamodel document) async {
     await deleteContact(document);
     documentviewed.remove(document);
   }

@@ -9,6 +9,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pdfreader/app/data/provider/datamodel.dart';
+import 'package:pdfreader/app/services/ad_service.dart';
 
 import '../../data/provider/database.dart';
 /**
@@ -48,11 +49,11 @@ class FilePickerController extends GetxController with GetTickerProviderStateMix
   set primarycolour(value) => _primarycolour.value=value;
   get primarycolour => _primarycolour.value;
 
-  final _documentviewed = [].obs;
+  final _documentviewed = <Datamodel>[].obs;
   set documentviewed(value) => _documentviewed.value = value;
   get documentviewed => _documentviewed.value;
 
-  final _documentfetch = [].obs;
+  final _documentfetch = <Datamodel>[].obs;
   set documentfetch(value) => _documentfetch.value = value;
   get documentfetch => _documentfetch.value;
 
@@ -72,7 +73,7 @@ class FilePickerController extends GetxController with GetTickerProviderStateMix
     String formattedDate = formatter.format(now);
     try {
       // _directoryPath = null;
-      paths = (await FilePicker.platform.pickFiles(
+      paths = (await FilePicker.pickFiles(
         type: pickingType,
         allowMultiple: false,
         onFileLoading: (FilePickerStatus status) => print(status),
@@ -104,7 +105,7 @@ class FilePickerController extends GetxController with GetTickerProviderStateMix
 
   }
 
-  updated(document) async {
+  Future<void> updated(Datamodel document) async {
     await deleteContact(document);
     documentviewed.remove(document);
   }
@@ -134,7 +135,11 @@ class FilePickerController extends GetxController with GetTickerProviderStateMix
   }
 
   void openfiles(String path){
-    Get.toNamed("/viewpage", arguments: {"document": path});
+    AdService().showInterstitial(
+      onAdDismissed: () {
+        Get.toNamed("/viewpage", arguments: {"document": path});
+      },
+    );
   }
   void logException(String message) {
     print(message);

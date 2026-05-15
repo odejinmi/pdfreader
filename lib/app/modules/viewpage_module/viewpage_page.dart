@@ -1,188 +1,98 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pdfreader/app/modules/viewpage_module/viewpage_controller.dart';
+import 'package:pdfreader/app/services/ad_service.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 /**
  * GetX Template Generator - fb.com/htngu.99
  * */
 
 class ViewpagePage extends GetView<ViewpageController> {
+  const ViewpagePage({super.key});
+
   @override
   Widget build(BuildContext context) {
-    double width = MediaQuery
-        .of(context)
-        .size
-        .width;
-    // print("hello");
-    final bool canJumpToPreviousPage = controller.pdfViewerController
-        .pageCount > 1;
-    final bool canJumpToNextPage =
-        controller.pdfViewerController.pageNumber <
-            controller.pdfViewerController.pageCount;
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: const Color(0xff771B1B),
-        // title: const Text("Read pdf", style: TextStyle(color: Colors.black),),
-        actions: <Widget>[
-          IconButton(onPressed: (){}, icon: const Icon(Icons.share,color: Colors.white,)),
-          IconButton(
-              onPressed: (){
-                bottomsheet();
-              },
-              icon: const Icon(Icons.volume_up_sharp,color: Colors.white,)
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop, result) async {
+        if (didPop) return;
+        AdService().showInterstitial(
+          onAdDismissed: () {
+            Get.back();
+          },
+        );
+      },
+      child: Scaffold(
+        backgroundColor: Colors.grey[100],
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          foregroundColor: const Color(0xff1E293B),
+          elevation: 0,
+          title: Text(
+            controller.file?.path.split('/').last ?? "Reading",
+            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
           ),
-          IconButton(
-              onPressed: (){},
-              icon: const Icon(Icons.print,color: Colors.white,)
-          ),
-          IconButton(
-              onPressed: (){},
-              icon: const Icon(Icons.star_sharp,color: Colors.white,)
-          ),
-          IconButton(
-              onPressed: (){},
-              icon: const Icon(Icons.more_vert,color: Colors.white,)
-          ),
-          // Row(
-          //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          //   mainAxisSize: MainAxisSize.min,
-          //   children: <Widget>[
-          //     Container(
-          //         width: 20, child: controller.paginationTextField(context)),
-          //     Padding(
-          //         padding:
-          //         const EdgeInsets.only(left: 10.0, right: 10.0),
-          //         child: Text(
-          //           '/',
-          //           style: TextStyle(color: controller.color, fontSize: 16),
-          //           semanticsLabel: '',
-          //         )),
-          //     Text(
-          //       controller.pageCount.toString(),
-          //       style: TextStyle(color: controller.color, fontSize: 16),
-          //       semanticsLabel: '',
-          //     )
-          //     // Bookmark button
-          //   ],
-          // ),
-          // Previous page button
-          // Padding(
-          //   padding: const EdgeInsets.only(left: 16),
-          //   child: Material(
-          //       color: Colors.transparent,
-          //       child: IconButton(
-          //         icon: Icon(
-          //           Icons.keyboard_arrow_up,
-          //           color: canJumpToPreviousPage
-          //               ? controller.color
-          //               : controller.disabledColor,
-          //           size: 24,
-          //         ),
-          //         onPressed: canJumpToPreviousPage
-          //             ? () {
-          //           // widget.onTap?.call('Previous page');
-          //           controller.pdfViewerController.previousPage();
-          //         }
-          //             : null,
-          //         tooltip: 'Previous page',
-          //       )),
-          // ),
-          // // Next page button
-          // Padding(
-          //   padding: const EdgeInsets.only(left: 8),
-          //   child: Material(
-          //       color: Colors.transparent,
-          //       child: IconButton(
-          //         icon: Icon(
-          //           Icons.keyboard_arrow_down,
-          //           color: canJumpToNextPage
-          //               ? controller.color
-          //               : controller.disabledColor,
-          //           size: 24,
-          //         ),
-          //         onPressed: canJumpToNextPage
-          //             ? () {
-          //           //widget.onTap?.call('Next page');
-          //           controller.pdfViewerController.nextPage();
-          //         }
-          //             : null,
-          //         tooltip: 'Next page',
-          //       )),
-          // ),
-
-          // IconButton(
-          //   icon: const Icon(
-          //     Icons.bookmark,
-          //     color: Colors.white,
-          //     semanticLabel: 'Bookmark',
-          //   ),
-          //   onPressed: () {
-          //     controller.pdfViewerKey.currentState?.openBookmarkView();
-          //   },
-          // ),
-          // Search button
-          // Material(
-          //   color: Colors.transparent,
-          //   child: IconButton(
-          //     icon: const Icon(
-          //       Icons.search,
-          //       color: Colors.white,
-          //       size: 24,
-          //     ),
-          //     onPressed: () {
-          //       _pdfViewerController.clearSelection();
-          //       // widget.onTap?.call('Search');
-          //     },
-          //     tooltip: 'Search',
-          //   ),
-          // ),
-          // // View settings button
-          // Material(
-          //   color: Colors.transparent,
-          //   child: IconButton(
-          //     icon: const Icon(
-          //       Icons.settings,
-          //       color: Colors.white,
-          //       size: 24,
-          //     ),
-          //     onPressed:() {
-          //       _pdfViewerController.clearSelection();
-          //       // widget.onTap?.call('View settings');
-          //     },
-          //     tooltip: 'View settings' ,
-          //   ),
-          // ),
-        ],
-      ),
-      body: SfPdfViewer.file(
-        controller.file!,
-        controller: controller.pdfViewerController,
-        key: controller.pdfViewerKey,
-        onDocumentLoadFailed: (PdfDocumentLoadFailedDetails details) {
-          AlertDialog(
-            title: Text(details.error),
-            content: Text(details.description),
-            actions: <Widget>[
-              ElevatedButton(
-                child: const Text('OK'),
+          actions: <Widget>[
+            IconButton(
+                onPressed: () {},
+                icon: const Icon(Icons.share_rounded)),
+            IconButton(
                 onPressed: () {
-                  Navigator.of(context).pop();
+                  bottomsheet();
                 },
+                icon: const Icon(Icons.record_voice_over_rounded)
+            ),
+            IconButton(
+                onPressed: () {},
+                icon: const Icon(Icons.star_outline_rounded)
+            ),
+            IconButton(
+                onPressed: () {},
+                icon: const Icon(Icons.more_vert_rounded)
+            ),
+          ],
+        ),
+        body: Container(
+          margin: const EdgeInsets.only(top: 8),
+          decoration: const BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+          ),
+          clipBehavior: Clip.antiAlias,
+          child: SfPdfViewer.file(
+            controller.file!,
+            controller: controller.pdfViewerController,
+            key: controller.pdfViewerKey,
+            onDocumentLoadFailed: (PdfDocumentLoadFailedDetails details) {
+              Get.defaultDialog(
+                title: "Load Failed",
+                middleText: details.description,
+                textConfirm: "OK",
+                onConfirm: () => Get.back(),
+              );
+            },
+            onDocumentLoaded: (PdfDocumentLoadedDetails details) {
+                // controller.pdfViewerController.jumpToPage(int.parse(currentdocument));
+            },
+          ),
+        ),
+        bottomNavigationBar: Container(
+          color: Colors.white,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              SizedBox(
+                height: 50,
+                child: AdService().getBannerAd(),
               ),
             ],
-          );
-        },
-        onDocumentLoaded: (PdfDocumentLoadedDetails details) {
-            // print(currentdocument);
-            // print(int.parse(currentdocument));
-            // controller.pdfViewerController.jumpToPage(int.parse(currentdocument));
-        },
-        // pageLayoutMode: PdfPageLayoutMode.single,
+          ),
+        ),
+        floatingActionButton: controller.playpause(),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       ),
-      floatingActionButton: controller.playpause(),
-      floatingActionButtonLocation: FloatingActionButtonLocation
-          .miniCenterFloat,
     );
+;
   }
   void bottomsheet(){
     Get.bottomSheet(
