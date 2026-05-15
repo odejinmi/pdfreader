@@ -12,19 +12,19 @@ class AdService {
 
 
   static final String bannerAdUnitId = Platform.isAndroid
-      ? 'ca-app-pub-6117361441866120/2167479471'
+      ? 'ca-app-pub-6117361441866120/3174487502'
       : 'ca-app-pub-6117361441866120/1488443500';
 
   static final String rewardVideoUnitId = Platform.isAndroid
-      ? 'ca-app-pub-6117361441866120/1189439726'
+      ? 'ca-app-pub-6117361441866120/7345437893'
       : 'ca-app-pub-6117361441866120/2609953488';
 
   static String interstitialUnitId = Platform.isAndroid
-      ? 'ca-app-pub-6117361441866120/7012612046'
+      ? 'ca-app-pub-6117361441866120/9548324168'
       : 'ca-app-pub-6117361441866120/8759030065';
 
   static String rewardInterstitialUnitId = Platform.isAndroid
-      ? 'ca-app-pub-6117361441866120/1049838923'
+      ? 'ca-app-pub-6117361441866120/5980385332'
       : 'ca-app-pub-6117361441866120/6040874481';
 
 

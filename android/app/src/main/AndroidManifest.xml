@@ -35,7 +35,7 @@
         <!--        correct advert id-->
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="ca-app-pub-6117361441866120~3480561146"/> <!-- Sample AdMob ID, replace with yours -->
+            android:value="ca-app-pub-6117361441866120~5800650847"/> <!-- Sample AdMob ID, replace with yours -->
         <!--        mcd advert id-->
         <!--        <meta-data-->
         <!--            android:name="com.google.android.gms.ads.APPLICATION_ID"-->
